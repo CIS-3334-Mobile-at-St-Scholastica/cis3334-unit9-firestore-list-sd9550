@@ -35,8 +35,7 @@ class _ItemListAppState extends State<ItemListApp> {
   // Controller for the input field
   final TextEditingController _newItemTextField = TextEditingController();
 
-  // Local list of items (Phase 1: local; Phase 2: Firestore stream replaces this).
-  final List<String> _itemList = <String>[];
+  // Firestore collection reference
   late final CollectionReference<Map<String, dynamic>> items;
 
   @override
@@ -45,27 +44,26 @@ class _ItemListAppState extends State<ItemListApp> {
     items = FirebaseFirestore.instance.collection('ITEMS');
   }
 
-  // ACTION: add one item from the TextField to the local list.
-  void _addItem() {
+  // ACTION: add one item from the TextField to Firestore
+  Future<void> _addItem() async {
     final newItem = _newItemTextField.text.trim();
     if (newItem.isEmpty) return;
-    setState(() {
-      //_itemList.add(newItem);
-      items.add(
-          {
-            'item_name': newItem,
-            'createdAt': FieldValue.serverTimestamp(),
-          });
+
+    try {
+      await items.add({
+        'item_name': newItem,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
       _newItemTextField.clear();
-    });
+    } catch (e) {
+      // Handle error (you could show a snackbar or dialog here)
+      print('Error adding item: $e');
+    }
   }
 
-  // ACTION: remove the item at the given index.
-  void _removeItemAt(String  id) {
-    setState(() {
-      //_itemList.removeAt(i); // remove item from list
-      items.doc(id).delete(); // remove item from Firestore
-    });
+  // ACTION: remove the item with the given id from Firestore
+  void _removeItemAt(String id) {
+    items.doc(id).delete();
   }
 
   @override
@@ -76,10 +74,10 @@ class _ItemListAppState extends State<ItemListApp> {
         padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
         child: Column(
           children: [
-            // ====== Item Input  ======
+            // Item Input
             Row(
               children: [
-                // ====== Item Name TextField ======
+                // Item Name TextField
                 Expanded(
                   child: TextField(
                     controller: _newItemTextField,
@@ -90,29 +88,62 @@ class _ItemListAppState extends State<ItemListApp> {
                     ),
                   ),
                 ),
-                // ====== Spacer for formating ======
+                // Spacer for formating
                 const SizedBox(width: 12),
-                // ====== Add Item Button ======
+                // Add Item Button
                 FilledButton(onPressed: _addItem, child: const Text('Add')),
               ],
             ),
-            // ====== Spacer for formating ======
+            // Spacer for formating
             const SizedBox(height: 24),
             Expanded(
-              // ====== Item List ======
-              child: ListView.builder(
-                itemCount: _itemList.length,
-                itemBuilder: (context, i) => Dismissible(
-                  key: ValueKey(_itemList[i]),
-                  background: Container(color: Colors.red),
-                  onDismissed: (_) => _removeItemAt(i as String),
-                  // ====== Item Tile ======
-                  child: ListTile(
-                    leading: const Icon(Icons.check_box),
-                    title: Text(_itemList[i]),
-                    onTap: () => _removeItemAt(i as String),
-                  ),
-                ),
+              // Item List with StreamBuilder
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: items.snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snap) {
+                  // Error checking
+                  if (snap.hasError) {
+                    return Center(
+                      child: Text('Error: ${snap.error}'),
+                    );
+                  }
+
+                  // Loading state
+                  if (snap.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  // Check if data is null or empty
+                  if (snap.data == null || snap.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text('No items found. Add some items!'),
+                    );
+                  }
+
+                  // Item List
+                  return ListView.builder(
+                    itemCount: snap.data!.docs.length,
+                    itemBuilder: (context, i) {
+                      final doc = snap.data!.docs[i];
+                      final String id = doc.id;
+                      final String name = (doc.data()['item_name'] ?? '') as String;
+
+                      return Dismissible(
+                        key: ValueKey(id),
+                        background: Container(color: Colors.red),
+                        onDismissed: (_) => _removeItemAt(id),
+                        // Item Tile
+                        child: ListTile(
+                          leading: const Icon(Icons.check_box),
+                          title: Text(name),
+                          onTap: () => _removeItemAt(id),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
