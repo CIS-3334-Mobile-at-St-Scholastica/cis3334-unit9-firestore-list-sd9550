@@ -47,30 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBZoXxvlEXImSHeYFh4kfawCNZGPw35ExE',
-    appId: '1:867220584701:web:071c50d1c149a4241ba694',
-    messagingSenderId: '867220584701',
-    projectId: 'sd9550-firestore-16432',
-    authDomain: 'sd9550-firestore-16432.firebaseapp.com',
-    storageBucket: 'sd9550-firestore-16432.firebasestorage.app',
-    measurementId: 'G-EDHF3K7BG1',
+    apiKey: 'AIzaSyCklJA0TJCCSRq8AtkArqwEfGNylMTHjjs',
+    appId: '1:773125554272:web:f4be11c2ce222f18bb4305',
+    messagingSenderId: '773125554272',
+    projectId: 'sd9550-firebase',
+    authDomain: 'sd9550-firebase.firebaseapp.com',
+    storageBucket: 'sd9550-firebase.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDJqkbh3jeOcFEnP6AoHIzYWEA0nDFG8GI',
-    appId: '1:867220584701:android:83b07424feffcaec1ba694',
-    messagingSenderId: '867220584701',
-    projectId: 'sd9550-firestore-16432',
-    storageBucket: 'sd9550-firestore-16432.firebasestorage.app',
+    apiKey: 'AIzaSyAZ2tK73e1Sw_5cnOW5XaMYJFfwqXPVzBc',
+    appId: '1:773125554272:android:1b8c3f3c32652fbcbb4305',
+    messagingSenderId: '773125554272',
+    projectId: 'sd9550-firebase',
+    storageBucket: 'sd9550-firebase.firebasestorage.app',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBZoXxvlEXImSHeYFh4kfawCNZGPw35ExE',
-    appId: '1:867220584701:web:206e01a506d9f63d1ba694',
-    messagingSenderId: '867220584701',
-    projectId: 'sd9550-firestore-16432',
-    authDomain: 'sd9550-firestore-16432.firebaseapp.com',
-    storageBucket: 'sd9550-firestore-16432.firebasestorage.app',
-    measurementId: 'G-B8MSVRYRLZ',
+    apiKey: 'AIzaSyCklJA0TJCCSRq8AtkArqwEfGNylMTHjjs',
+    appId: '1:773125554272:web:8f154f8818ffbcfcbb4305',
+    messagingSenderId: '773125554272',
+    projectId: 'sd9550-firebase',
+    authDomain: 'sd9550-firebase.firebaseapp.com',
+    storageBucket: 'sd9550-firebase.firebasestorage.app',
   );
+
 }

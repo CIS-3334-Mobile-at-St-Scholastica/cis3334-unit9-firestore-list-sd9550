@@ -42,6 +42,20 @@ class _ItemListAppState extends State<ItemListApp> {
   void initState() {
     super.initState();
     items = FirebaseFirestore.instance.collection('ITEMS');
+    //print("initState test");
+    testFirestoreConnection();
+  }
+
+  void testFirestoreConnection() async {
+    try {
+      await items.add({
+        'test': 'connection_test',
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+      print("Firestore connection successful!");
+    } catch (e) {
+      print("Firestore connection failed: $e");
+    }
   }
 
   // ACTION: add one item from the TextField to Firestore
@@ -56,7 +70,7 @@ class _ItemListAppState extends State<ItemListApp> {
       });
       _newItemTextField.clear();
     } catch (e) {
-      // Handle error (you could show a snackbar or dialog here)
+      // Handle error
       print('Error adding item: $e');
     }
   }

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "773125554272",
-    "project_id": "sd9550-firebase",
-    "storage_bucket": "sd9550-firebase.firebasestorage.app"
+    "project_number": "1080743604431",
+    "project_id": "sd9550-firestore",
+    "storage_bucket": "sd9550-firestore.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:773125554272:android:1b8c3f3c32652fbcbb4305",
+        "mobilesdk_app_id": "1:1080743604431:android:713d86922725f9ae8307ba",
         "android_client_info": {
-          "package_name": "css.cis3334.flutter_firestore_itemlist"
+          "package_name": "com.sd9550"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAZ2tK73e1Sw_5cnOW5XaMYJFfwqXPVzBc"
+          "current_key": "AIzaSyCI-f8pmOPCK99vqBrdIWZzezEO9jfVasE"
         }
       ],
       "services": {
